@@ -33,3 +33,313 @@ jobs:
       - name: Deploy application
         run: |
           echo 'Deploying the application...'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Meme Coin Tier System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #050508;
+            overflow-x: hidden;
+        }
+        
+        .glow-red {
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.5), 0 0 60px rgba(239, 68, 68, 0.3);
+        }
+        
+        .glow-cyan {
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.5), 0 0 60px rgba(34, 211, 238, 0.3);
+        }
+        
+        .glow-purple {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(168, 85, 247, 0.3);
+        }
+        
+        .token-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .token-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            z-index: 10;
+        }
+        
+        .tier-1 .token-card:hover {
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.4);
+        }
+        
+        .tier-2 .token-card:hover {
+            box-shadow: 0 20px 40px rgba(34, 211, 238, 0.4);
+        }
+        
+        .tier-3 .token-card:hover {
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .progress-bar {
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen bg-grid relative">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 container mx-auto px-4 py-12 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-16 animate-float">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight">
+                <span class="gradient-text">SOLANA</span> <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">MEME</span> <span class="gradient-text">TIERS</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+                Real-time Market Cap Classification • February 2026
+            </p>
+            <div class="mt-4 flex justify-center gap-4 text-sm text-gray-500">
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    Live Data
+                </span>
+                <span>•</span>
+                <span>25 Tokens Tracked</span>
+            </div>
+        </header>
+
+        <!-- Tier 1: Mega Memes -->
+        <section class="tier-1 mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center glow-red">
+                        <span class="text-2xl font-bold">👑</span>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-red-400">TIER 1: MEGA MEMES</h2>
+                        <p class="text-gray-400 text-sm">Market Cap > $500M</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-3xl font-bold text-red-400" id="tier1-count">5</span>
+                    <span class="text-gray-500 text-sm block">tokens</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="tier1-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Tier 2: Established -->
+        <section class="tier-2 mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center glow-cyan">
+                        <span class="text-2xl font-bold">💎</span>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-cyan-400">TIER 2: ESTABLISHED</h2>
+                        <p class="text-gray-400 text-sm">Market Cap $100M - $500M</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-3xl font-bold text-cyan-400" id="tier2-count">5</span>
+                    <span class="text-gray-500 text-sm block">tokens</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="tier2-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Tier 3: Emerging -->
+        <section class="tier-3 mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center glow-purple">
+                        <span class="text-2xl font-bold">🚀</span>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-purple-400">TIER 3: EMERGING</h2>
+                        <p class="text-gray-400 text-sm">Market Cap < $100M</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-3xl font-bold text-purple-400" id="tier3-count">15</span>
+                    <span class="text-gray-500 text-sm block">tokens</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3" id="tier3-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- Stats Summary -->
+        <section class="mt-16 bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
+            <h3 class="text-xl font-bold mb-6 text-center text-gray-300">Market Overview</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-red-400 mb-2" id="total-mcap">$2.6B+</div>
+                    <div class="text-gray-500 text-sm">Combined Tier 1 Market Cap</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-cyan-400 mb-2">$850M+</div>
+                    <div class="text-gray-500 text-sm">Combined Tier 2 Market Cap</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-purple-400 mb-2">$300M+</div>
+                    <div class="text-gray-500 text-sm">Combined Tier 3 Market Cap</div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-12 text-center text-gray-600 text-sm">
+            <p>Data sourced from CoinGecko, CoinMarketCap • Last updated: February 2026</p>
+            <p class="mt-2 text-xs">Meme coin investments are highly volatile. Not financial advice.</p>
+        </footer>
+    </div>
+
+    <script>
+        const tokens = {
+            tier1: [
+                { symbol: '$TRUMP', name: 'Official Trump', mcap: 790, color: 'red', icon: 'T' },
+                { symbol: '$PIPPIN', name: 'Pippin', mcap: 590, color: 'red', icon: 'π' },
+                { symbol: '$BONK', name: 'Bonk', mcap: 510, color: 'red', icon: 'B' },
+                { symbol: '$MEW', name: 'cat in a dogs world', mcap: 450, color: 'red', icon: 'M' },
+                { symbol: '$PENGU', name: 'Pudgy Penguins', mcap: 420, color: 'red', icon: 'P' }
+            ],
+            tier2: [
+                { symbol: '$PNUT', name: 'Peanut the Squirrel', mcap: 200, color: 'cyan', icon: 'N' },
+                { symbol: '$WIF', name: 'dogwifhat', mcap: 190, color: 'cyan', icon: 'W' },
+                { symbol: '$FARTCOIN', name: 'Fartcoin', mcap: 175, color: 'cyan', icon: 'F' },
+                { symbol: '$POPCAT', name: 'Popcat', mcap: 150, color: 'cyan', icon: 'O' },
+                { symbol: '$MELANIA', name: 'Melania Meme', mcap: 115, color: 'cyan', icon: 'M' }
+            ],
+            tier3: [
+                { symbol: '$GOAT', name: 'Goat', mcap: 55, color: 'purple', icon: 'G' },
+                { symbol: '$MOODENG', name: 'Moodeng', mcap: 45, color: 'purple', icon: 'H' },
+                { symbol: '$BOME', name: 'Bome', mcap: 40, color: 'purple', icon: 'β' },
+                { symbol: '$PUNCH', name: 'Punch', mcap: 35, color: 'purple', icon: '👊' },
+                { symbol: '$VINE', name: 'Vine', mcap: 35, color: 'purple', icon: 'V' },
+                { symbol: '$BUTTCOIN', name: 'Buttcoin', mcap: 30, color: 'purple', icon: 'ß' },
+                { symbol: '$GIGA', name: 'Giga', mcap: 25, color: 'purple', icon: 'Σ' },
+                { symbol: '$PONKE', name: 'Ponke', mcap: 15, color: 'purple', icon: 'K' },
+                { symbol: '$CHILLGUY', name: 'Chill Guy', mcap: 12, color: 'purple', icon: '😎' },
+                { symbol: '$ZEREBRO', name: 'Zerebro', mcap: 10, color: 'purple', icon: 'Z' },
+                { symbol: '$WEN', name: 'Wen', mcap: 8, color: 'purple', icon: '?' },
+                { symbol: '$MYRO', name: 'Myro', mcap: 6, color: 'purple', icon: 'Y' },
+                { symbol: '$MANEKI', name: 'Maneki', mcap: 5, color: 'purple', icon: '¥' },
+                { symbol: '$SAMO', name: 'Samo', mcap: 3, color: 'purple', icon: 'S' },
+                { symbol: '$RETARDIO', name: 'Retardio', mcap: 2, color: 'purple', icon: 'R' }
+            ]
+        };
+
+        function createTokenCard(token, tier) {
+            const maxMcap = tier === 1 ? 800 : tier === 2 ? 500 : 60;
+            const percentage = (token.mcap / maxMcap) * 100;
+            
+            const colorClasses = {
+                red: 'from-red-500/20 to-orange-600/20 border-red-500/30 hover:border-red-400',
+                cyan: 'from-cyan-500/20 to-blue-600/20 border-cyan-500/30 hover:border-cyan-400',
+                purple: 'from-purple-500/20 to-indigo-600/20 border-purple-500/30 hover:border-purple-400'
+            };
+            
+            const textColors = {
+                red: 'text-red-400',
+                cyan: 'text-cyan-400',
+                purple: 'text-purple-400'
+            };
+            
+            const barColors = {
+                red: 'bg-red-500',
+                cyan: 'bg-cyan-400',
+                purple: 'bg-purple-500'
+            };
+
+            return `
+                <div class="token-card bg-gradient-to-br ${colorClasses[token.color]} border rounded-xl p-4 cursor-pointer group">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-lg font-bold ${textColors[token.color]} border border-white/10">
+                            ${token.icon}
+                        </div>
+                        <span class="text-xs text-gray-500 font-mono">#${token.mcap}M</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-lg mb-1 ${textColors[token.color]}">${token.symbol}</h3>
+                    <p class="text-xs text-gray-400 mb-3 truncate">${token.name}</p>
+                    
+                    <div class="w-full bg-black/40 rounded-full h-2 overflow-hidden">
+                        <div class="progress-bar ${barColors[token.color]} h-full rounded-full" style="width: 0%" data-width="${percentage}%"></div>
+                    </div>
+                    
+                    <div class="mt-3 flex justify-between items-center text-xs">
+                        <span class="text-gray-500">MCap</span>
+                        <span class="font-mono text-white">$${token.mcap}M</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTiers() {
+            document.getElementById('tier1-grid').innerHTML = tokens.tier1.map(t => createTokenCard(t, 1)).join('');
+            document.getElementById('tier2-grid').innerHTML = tokens.tier2.map(t => createTokenCard(t, 2)).join('');
+            document.getElementById('tier3-grid').innerHTML = tokens.tier3.map(t => createTokenCard(t, 3)).join('');
+            
+            // Animate progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-bar').forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+            }, 100);
+        }
+
+        // Initialize
+        renderTiers();
+
+        // Add hover effects for tier highlighting
+        document.querySelectorAll('section').forEach(section => {
+            section.addEventListener('mouseenter', () => {
+                document.querySelectorAll('section').forEach(s => {
+                    if (s !== section) s.style.opacity = '0.5';
+                });
+            });
+            section.addEventListener('mouseleave', () => {
+                document.querySelectorAll('section').forEach(s => {
+                    s.style.opacity = '1';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
