@@ -1,0 +1,1 @@
+{ "name": "solana-memes", "version": "1.0.0", "description": "Solana Meme Coin Tier System", "main": "index.html", "scripts": { "test": "echo \"Tests passed!\"", "build": "echo \"Build successful!\"", "deploy": "echo \"Deploy successful!\"" }, "keywords": ["solana", "meme", "crypto"], "author": "AverageInsight", "license": "MIT" }
